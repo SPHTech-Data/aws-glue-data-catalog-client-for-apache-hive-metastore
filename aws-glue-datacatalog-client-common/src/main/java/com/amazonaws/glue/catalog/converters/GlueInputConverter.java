@@ -39,6 +39,10 @@ public final class GlueInputConverter {
     return convertToTableInput(HiveToCatalogConverter.convertTable(hiveTable));
   }
 
+  public static TableInput convertToTableInput(Table hiveTable, com.amazonaws.services.glue.model.Table glueTable) {
+    return convertToTableInput(HiveToCatalogConverter.convertTable(hiveTable, glueTable));
+  }
+
   public static TableInput convertToTableInput(com.amazonaws.services.glue.model.Table table) {
     TableInput tableInput = new TableInput();
 

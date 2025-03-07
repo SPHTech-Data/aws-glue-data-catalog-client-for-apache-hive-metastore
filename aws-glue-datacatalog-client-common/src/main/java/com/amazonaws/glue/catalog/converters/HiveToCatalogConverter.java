@@ -69,8 +69,26 @@ public class HiveToCatalogConverter {
     return catalogTable;
   }
 
+  public static com.amazonaws.services.glue.model.Table convertTable(
+      Table hiveTable, com.amazonaws.services.glue.model.Table glueTable) {
+    com.amazonaws.services.glue.model.Table catalogTable = new com.amazonaws.services.glue.model.Table();
+    catalogTable.setRetention(hiveTable.getRetention());
+    catalogTable.setPartitionKeys(convertFieldSchemaList(hiveTable.getPartitionKeys()));
+    catalogTable.setTableType(hiveTable.getTableType());
+    catalogTable.setName(hiveTable.getTableName());
+    catalogTable.setOwner(hiveTable.getOwner());
+    catalogTable.setCreateTime(new Date((long) hiveTable.getCreateTime() * 1000));
+    catalogTable.setLastAccessTime(new Date((long) hiveTable.getLastAccessTime() * 1000));
+    catalogTable.setStorageDescriptor(convertStorageDescriptor(hiveTable.getSd(), glueTable.getStorageDescriptor()));
+    catalogTable.setParameters(hiveTable.getParameters());
+    catalogTable.setViewExpandedText(hiveTable.getViewExpandedText());
+    catalogTable.setViewOriginalText(hiveTable.getViewOriginalText());
+
+    return catalogTable;
+  }
+
   public static com.amazonaws.services.glue.model.StorageDescriptor convertStorageDescriptor(
-          StorageDescriptor hiveSd) {
+      StorageDescriptor hiveSd) {
     com.amazonaws.services.glue.model.StorageDescriptor catalogSd =
             new com.amazonaws.services.glue.model.StorageDescriptor();
     catalogSd.setNumberOfBuckets(hiveSd.getNumBuckets());
@@ -85,6 +103,28 @@ public class HiveToCatalogConverter {
     catalogSd.setSkewedInfo(convertSkewedInfo(hiveSd.getSkewedInfo()));
     catalogSd.setSortColumns(convertOrderList(hiveSd.getSortCols()));
     catalogSd.setStoredAsSubDirectories(hiveSd.isStoredAsSubDirectories());
+
+    return catalogSd;
+  }
+
+  public static com.amazonaws.services.glue.model.StorageDescriptor convertStorageDescriptor(
+      StorageDescriptor hiveSd, com.amazonaws.services.glue.model.StorageDescriptor glueSd) {
+    com.amazonaws.services.glue.model.StorageDescriptor catalogSd =
+            new com.amazonaws.services.glue.model.StorageDescriptor();
+    catalogSd.setNumberOfBuckets(hiveSd.getNumBuckets());
+    catalogSd.setCompressed(hiveSd.isCompressed());
+    catalogSd.setParameters(hiveSd.getParameters());
+    catalogSd.setBucketColumns(hiveSd.getBucketCols());
+    catalogSd.setColumns(convertFieldSchemaList(hiveSd.getCols()));
+    catalogSd.setInputFormat(hiveSd.getInputFormat());
+    catalogSd.setLocation(hiveSd.getLocation());
+    catalogSd.setOutputFormat(hiveSd.getOutputFormat());
+    catalogSd.setSerdeInfo(convertSerDeInfo(hiveSd.getSerdeInfo()));
+    catalogSd.setSkewedInfo(convertSkewedInfo(hiveSd.getSkewedInfo()));
+    catalogSd.setSortColumns(convertOrderList(hiveSd.getSortCols()));
+    catalogSd.setStoredAsSubDirectories(hiveSd.isStoredAsSubDirectories());
+    catalogSd.setAdditionalLocations(glueSd.getAdditionalLocations());
+    catalogSd.setSchemaReference(glueSd.getSchemaReference());
 
     return catalogSd;
   }

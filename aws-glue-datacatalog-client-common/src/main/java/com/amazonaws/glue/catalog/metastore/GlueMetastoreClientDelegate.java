@@ -445,7 +445,20 @@ public class GlueMetastoreClientDelegate {
       hiveShims.updateTableStatsFast(db, newTable, wh, false, true, environmentContext);
     }
 
-    TableInput newTableInput = GlueInputConverter.convertToTableInput(newTable);
+    Table oldTable;
+
+    try {
+      oldTable = glueMetastore.getTable(dbName, oldTableName);
+      validateGlueTable(oldTable);
+    } catch (AmazonServiceException e) {
+      throw catalogToHiveConverter.wrapInHiveException(e);
+    } catch (Exception e) {
+      String msg = "Unable to get table: ";
+      logger.error(msg, e);
+      throw new MetaException(msg + e);
+    }
+
+    TableInput newTableInput = GlueInputConverter.convertToTableInput(newTable, oldTable);
 
     try {
       glueMetastore.updateTable(dbName, newTableInput, environmentContext);
