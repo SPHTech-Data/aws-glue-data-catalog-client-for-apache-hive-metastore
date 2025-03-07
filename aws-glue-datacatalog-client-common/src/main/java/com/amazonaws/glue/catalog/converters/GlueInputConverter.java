@@ -15,7 +15,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * This class provides methods to convert Hive/Catalog objects to Input objects used
+ * This class provides methods to convert Hive/Catalog objects to Input objects
+ * used
  * for Glue API parameters
  */
 public final class GlueInputConverter {
@@ -75,7 +76,8 @@ public final class GlueInputConverter {
     return partitionInput;
   }
 
-  public static List<PartitionInput> convertToPartitionInputs(Collection<com.amazonaws.services.glue.model.Partition> parts) {
+  public static List<PartitionInput> convertToPartitionInputs(
+      Collection<com.amazonaws.services.glue.model.Partition> parts) {
     List<PartitionInput> inputList = new ArrayList<>();
 
     for (com.amazonaws.services.glue.model.Partition part : parts) {
@@ -90,7 +92,7 @@ public final class GlueInputConverter {
     functionInput.setClassName(hiveFunction.getClassName());
     functionInput.setFunctionName(hiveFunction.getFunctionName());
     functionInput.setOwnerName(hiveFunction.getOwnerName());
-    if(hiveFunction.getOwnerType() != null) {
+    if (hiveFunction.getOwnerType() != null) {
       functionInput.setOwnerType(hiveFunction.getOwnerType().name());
     }
     functionInput.setResourceUris(HiveToCatalogConverter.covertResourceUriList(hiveFunction.getResourceUris()));

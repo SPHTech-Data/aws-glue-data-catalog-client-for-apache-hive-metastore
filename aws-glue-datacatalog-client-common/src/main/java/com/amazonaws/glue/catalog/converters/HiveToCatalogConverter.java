@@ -52,7 +52,7 @@ public class HiveToCatalogConverter {
   }
 
   public static com.amazonaws.services.glue.model.Table convertTable(
-          Table hiveTable) {
+      Table hiveTable) {
     com.amazonaws.services.glue.model.Table catalogTable = new com.amazonaws.services.glue.model.Table();
     catalogTable.setRetention(hiveTable.getRetention());
     catalogTable.setPartitionKeys(convertFieldSchemaList(hiveTable.getPartitionKeys()));
@@ -89,8 +89,7 @@ public class HiveToCatalogConverter {
 
   public static com.amazonaws.services.glue.model.StorageDescriptor convertStorageDescriptor(
       StorageDescriptor hiveSd) {
-    com.amazonaws.services.glue.model.StorageDescriptor catalogSd =
-            new com.amazonaws.services.glue.model.StorageDescriptor();
+    com.amazonaws.services.glue.model.StorageDescriptor catalogSd = new com.amazonaws.services.glue.model.StorageDescriptor();
     catalogSd.setNumberOfBuckets(hiveSd.getNumBuckets());
     catalogSd.setCompressed(hiveSd.isCompressed());
     catalogSd.setParameters(hiveSd.getParameters());
@@ -109,8 +108,7 @@ public class HiveToCatalogConverter {
 
   public static com.amazonaws.services.glue.model.StorageDescriptor convertStorageDescriptor(
       StorageDescriptor hiveSd, com.amazonaws.services.glue.model.StorageDescriptor glueSd) {
-    com.amazonaws.services.glue.model.StorageDescriptor catalogSd =
-            new com.amazonaws.services.glue.model.StorageDescriptor();
+    com.amazonaws.services.glue.model.StorageDescriptor catalogSd = new com.amazonaws.services.glue.model.StorageDescriptor();
     catalogSd.setNumberOfBuckets(hiveSd.getNumBuckets());
     catalogSd.setCompressed(hiveSd.isCompressed());
     catalogSd.setParameters(hiveSd.getParameters());
@@ -130,9 +128,8 @@ public class HiveToCatalogConverter {
   }
 
   public static com.amazonaws.services.glue.model.Column convertFieldSchema(
-          FieldSchema hiveFieldSchema) {
-    com.amazonaws.services.glue.model.Column catalogFieldSchema =
-            new com.amazonaws.services.glue.model.Column();
+      FieldSchema hiveFieldSchema) {
+    com.amazonaws.services.glue.model.Column catalogFieldSchema = new com.amazonaws.services.glue.model.Column();
     catalogFieldSchema.setComment(hiveFieldSchema.getComment());
     catalogFieldSchema.setName(hiveFieldSchema.getName());
     catalogFieldSchema.setType(hiveFieldSchema.getType());
@@ -141,10 +138,9 @@ public class HiveToCatalogConverter {
   }
 
   public static List<com.amazonaws.services.glue.model.Column> convertFieldSchemaList(
-          List<FieldSchema> hiveFieldSchemaList) {
-    List<com.amazonaws.services.glue.model.Column> catalogFieldSchemaList =
-            new ArrayList<com.amazonaws.services.glue.model.Column>();
-    for (FieldSchema hiveFs : hiveFieldSchemaList){
+      List<FieldSchema> hiveFieldSchemaList) {
+    List<com.amazonaws.services.glue.model.Column> catalogFieldSchemaList = new ArrayList<com.amazonaws.services.glue.model.Column>();
+    for (FieldSchema hiveFs : hiveFieldSchemaList) {
       catalogFieldSchemaList.add(convertFieldSchema(hiveFs));
     }
 
@@ -152,7 +148,7 @@ public class HiveToCatalogConverter {
   }
 
   public static com.amazonaws.services.glue.model.SerDeInfo convertSerDeInfo(
-          SerDeInfo hiveSerDeInfo) {
+      SerDeInfo hiveSerDeInfo) {
     com.amazonaws.services.glue.model.SerDeInfo catalogSerDeInfo = new com.amazonaws.services.glue.model.SerDeInfo();
     catalogSerDeInfo.setName(hiveSerDeInfo.getName());
     catalogSerDeInfo.setParameters(hiveSerDeInfo.getParameters());
@@ -162,12 +158,12 @@ public class HiveToCatalogConverter {
   }
 
   public static com.amazonaws.services.glue.model.SkewedInfo convertSkewedInfo(SkewedInfo hiveSkewedInfo) {
-    if (hiveSkewedInfo == null) 
+    if (hiveSkewedInfo == null)
       return null;
     com.amazonaws.services.glue.model.SkewedInfo catalogSkewedInfo = new com.amazonaws.services.glue.model.SkewedInfo()
-              .withSkewedColumnNames(hiveSkewedInfo.getSkewedColNames())
-              .withSkewedColumnValues(convertSkewedValue(hiveSkewedInfo.getSkewedColValues()))
-              .withSkewedColumnValueLocationMaps(convertSkewedMap(hiveSkewedInfo.getSkewedColValueLocationMaps()));
+        .withSkewedColumnNames(hiveSkewedInfo.getSkewedColNames())
+        .withSkewedColumnValues(convertSkewedValue(hiveSkewedInfo.getSkewedColValues()))
+        .withSkewedColumnValueLocationMaps(convertSkewedMap(hiveSkewedInfo.getSkewedColValueLocationMaps()));
     return catalogSkewedInfo;
   }
 
@@ -190,18 +186,18 @@ public class HiveToCatalogConverter {
 
     return catalogOrderList;
   }
-  
+
   public static com.amazonaws.services.glue.model.Partition convertPartition(Partition src) {
     com.amazonaws.services.glue.model.Partition tgt = new com.amazonaws.services.glue.model.Partition();
-    
+
     tgt.setDatabaseName(src.getDbName());
     tgt.setTableName(src.getTableName());
-    tgt.setCreationTime(new Date((long) src.getCreateTime() * 1000)); 
-    tgt.setLastAccessTime(new Date((long) src.getLastAccessTime() * 1000)); 
+    tgt.setCreationTime(new Date((long) src.getCreateTime() * 1000));
+    tgt.setLastAccessTime(new Date((long) src.getLastAccessTime() * 1000));
     tgt.setParameters(src.getParameters());
     tgt.setStorageDescriptor(convertStorageDescriptor(src.getSd()));
     tgt.setValues(src.getValues());
-    
+
     return tgt;
   }
 
@@ -218,8 +214,8 @@ public class HiveToCatalogConverter {
     return sb.toString();
   }
 
-  public static Map<String, String> convertSkewedMap(final Map<List<String>, String> coreSkewedMap){
-    if (coreSkewedMap == null){
+  public static Map<String, String> convertSkewedMap(final Map<List<String>, String> coreSkewedMap) {
+    if (coreSkewedMap == null) {
       return null;
     }
     Map<String, String> catalogSkewedMap = new HashMap<>();
@@ -242,7 +238,7 @@ public class HiveToCatalogConverter {
   }
 
   public static com.amazonaws.services.glue.model.UserDefinedFunction convertFunction(final Function hiveFunction) {
-    if (hiveFunction == null ){
+    if (hiveFunction == null) {
       return null;
     }
     com.amazonaws.services.glue.model.UserDefinedFunction catalogFunction = new com.amazonaws.services.glue.model.UserDefinedFunction();
@@ -250,7 +246,7 @@ public class HiveToCatalogConverter {
     catalogFunction.setFunctionName(hiveFunction.getFunctionName());
     catalogFunction.setCreateTime(new Date((long) (hiveFunction.getCreateTime()) * 1000));
     catalogFunction.setOwnerName(hiveFunction.getOwnerName());
-    if(hiveFunction.getOwnerType() != null) {
+    if (hiveFunction.getOwnerType() != null) {
       catalogFunction.setOwnerType(hiveFunction.getOwnerType().name());
     }
     catalogFunction.setResourceUris(covertResourceUriList(hiveFunction.getResourceUris()));
@@ -258,7 +254,7 @@ public class HiveToCatalogConverter {
   }
 
   public static List<com.amazonaws.services.glue.model.ResourceUri> covertResourceUriList(
-          final List<ResourceUri> hiveResourceUriList) {
+      final List<ResourceUri> hiveResourceUriList) {
     if (hiveResourceUriList == null) {
       return null;
     }
@@ -281,12 +277,13 @@ public class HiveToCatalogConverter {
 
     List<com.amazonaws.services.glue.model.ColumnStatistics> catalogColumnStatisticsList = new ArrayList<>();
     for (ColumnStatisticsObj hiveColumnStatisticsObj : hiveColumnStatisticsObjs) {
-      com.amazonaws.services.glue.model.ColumnStatistics catalogColumnStatistics =
-          new com.amazonaws.services.glue.model.ColumnStatistics();
+      com.amazonaws.services.glue.model.ColumnStatistics catalogColumnStatistics = new com.amazonaws.services.glue.model.ColumnStatistics();
       catalogColumnStatistics.setColumnName(hiveColumnStatisticsObj.getColName());
       catalogColumnStatistics.setColumnType(hiveColumnStatisticsObj.getColType());
-      // Last analyzed time in Hive is in days since Epoch, Java Date is in milliseconds
-      catalogColumnStatistics.setAnalyzedTime(new Date(TimeUnit.DAYS.toMillis(hiveColumnStatisticsDesc.getLastAnalyzed())));
+      // Last analyzed time in Hive is in days since Epoch, Java Date is in
+      // milliseconds
+      catalogColumnStatistics
+          .setAnalyzedTime(new Date(TimeUnit.DAYS.toMillis(hiveColumnStatisticsDesc.getLastAnalyzed())));
       catalogColumnStatistics.setStatisticsData(convertColumnStatisticsData(hiveColumnStatisticsObj.getStatsData()));
       catalogColumnStatisticsList.add(catalogColumnStatistics);
     }
@@ -296,10 +293,10 @@ public class HiveToCatalogConverter {
 
   private static com.amazonaws.services.glue.model.ColumnStatisticsData convertColumnStatisticsData(
       ColumnStatisticsData hiveColumnStatisticsData) {
-    com.amazonaws.services.glue.model.ColumnStatisticsData catalogColumnStatisticsData =
-        new com.amazonaws.services.glue.model.ColumnStatisticsData();
+    com.amazonaws.services.glue.model.ColumnStatisticsData catalogColumnStatisticsData = new com.amazonaws.services.glue.model.ColumnStatisticsData();
 
-    // Hive uses the TUnion object to ensure that only one stats object is set at any time, this means that we can
+    // Hive uses the TUnion object to ensure that only one stats object is set at
+    // any time, this means that we can
     // only call the get*() of a stats type if the 'setField' is set to that value
     ColumnStatisticsData._Fields setField = hiveColumnStatisticsData.getSetField();
     switch (setField) {
@@ -382,10 +379,9 @@ public class HiveToCatalogConverter {
   }
 
   private static com.amazonaws.services.glue.model.DecimalNumber convertDecimal(Decimal hiveDecimal) {
-    com.amazonaws.services.glue.model.DecimalNumber catalogDecimal =
-        new com.amazonaws.services.glue.model.DecimalNumber();
+    com.amazonaws.services.glue.model.DecimalNumber catalogDecimal = new com.amazonaws.services.glue.model.DecimalNumber();
     catalogDecimal.setUnscaledValue(ByteBuffer.wrap(hiveDecimal.getUnscaled()));
-    catalogDecimal.setScale((int)hiveDecimal.getScale());
+    catalogDecimal.setScale((int) hiveDecimal.getScale());
     return catalogDecimal;
   }
 
