@@ -26,12 +26,12 @@ final class AwsGlueHive3Shims implements AwsGlueHiveShims {
 
   @Override
   public ExprNodeGenericFuncDesc getDeserializeExpression(byte[] exprBytes) {
-    return SerializationUtilities.deserializeExpressionFromKryo(exprBytes);
+    return SerializationUtilities.deserializeExpression(exprBytes);
   }
 
   @Override
   public byte[] getSerializeExpression(ExprNodeGenericFuncDesc expr) {
-    return SerializationUtilities.serializeExpressionToKryo(expr);
+    return SerializationUtilities.serializeExpression(expr);
   }
 
   @Override

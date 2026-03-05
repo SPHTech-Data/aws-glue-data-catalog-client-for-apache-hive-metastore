@@ -23,6 +23,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.apache.hive</groupId>
+            <artifactId>hive-standalone-metastore-common</artifactId>
+            <version>${hive3.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.amazonaws.glue</groupId>
             <artifactId>shims-common</artifactId>
             <version>${project.version}</version>
