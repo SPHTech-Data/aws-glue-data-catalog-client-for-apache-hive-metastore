@@ -10,7 +10,10 @@ import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.apache.hadoop.hive.metastore.api.Partition;
 import org.apache.hadoop.hive.metastore.api.Table;
 import org.apache.hadoop.hive.metastore.utils.MetaStoreUtils;
+import org.apache.hadoop.hive.metastore.utils.MetaStoreServerUtils;
 import org.apache.hadoop.hive.ql.exec.SerializationUtilities;
+
+import java.nio.charset.StandardCharsets;
 import org.apache.hadoop.hive.ql.plan.ExprNodeGenericFuncDesc;
 import org.apache.hadoop.hive.metastore.Warehouse;
 
@@ -26,12 +29,12 @@ final class AwsGlueHive3Shims implements AwsGlueHiveShims {
 
   @Override
   public ExprNodeGenericFuncDesc getDeserializeExpression(byte[] exprBytes) {
-    return SerializationUtilities.deserializeExpression(exprBytes);
+    return SerializationUtilities.deserializeExpression(new String(exprBytes, StandardCharsets.UTF_8));
   }
 
   @Override
   public byte[] getSerializeExpression(ExprNodeGenericFuncDesc expr) {
-    return SerializationUtilities.serializeExpression(expr);
+    return SerializationUtilities.serializeExpression(expr).getBytes(StandardCharsets.UTF_8);
   }
 
   @Override
@@ -61,7 +64,7 @@ final class AwsGlueHive3Shims implements AwsGlueHiveShims {
       Partition newPart,
       Table tbl,
       EnvironmentContext environmentContext) {
-    return MetaStoreUtils.requireCalStats(oldPart, newPart, tbl, environmentContext);
+    return MetaStoreServerUtils.requireCalStats(oldPart, newPart, tbl, environmentContext);
   }
 
   @Override
@@ -73,13 +76,13 @@ final class AwsGlueHive3Shims implements AwsGlueHiveShims {
       boolean forceRecompute,
       EnvironmentContext environmentContext
   ) throws MetaException {
-    MetaStoreUtils.updateTableStatsSlow(db, tbl, wh, madeDir, forceRecompute, environmentContext);
+    MetaStoreServerUtils.updateTableStatsSlow(db, tbl, wh, madeDir, forceRecompute, environmentContext);
     return true;
   }
 
   @Override
   public String validateTblColumns(List<FieldSchema> cols) {
-    return MetaStoreUtils.validateTblColumns(cols);
+    return MetaStoreServerUtils.validateTblColumns(cols);
   }
 
 }
