@@ -47,6 +47,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>ch.qos.reload4j</groupId>
+            <artifactId>reload4j</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.amazonaws.glue</groupId>
             <artifactId>shims-loader</artifactId>
             <version>${project.version}</version>
@@ -58,6 +63,12 @@
             <artifactId>hadoop-mapreduce-client-core</artifactId>
             <version>${hadoop.version}</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
